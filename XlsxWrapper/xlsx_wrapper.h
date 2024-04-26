@@ -23,6 +23,8 @@ public:
 
     public:
         Book(QString fileName);
+       ~Book(); // TODO: сделать удаление книг
+
         bool isValid() {return _valid;}
 
         Sheet* sheet(QString asheetName);
@@ -44,6 +46,7 @@ public:
         int _maxCol;
 
         Sheet(QString aname, Book abook);
+       ~Sheet(); // TODO: сделать удаление ячеек
 
     public:
         Book* book(){return _book;}
@@ -55,6 +58,7 @@ public:
         QXlsx::Worksheet* toXlsx(){return _xlsxSheet;}
     };
 
+    // FIXME: В данный момент это класс только для чтения, т.к. запись в ячейку ничего не сделает.
     class Cell
     {
         friend class Sheet;
@@ -67,7 +71,7 @@ public:
     public:
 
         QVariant data();
-        void setData(QVariant adata);
+//        void setData(QVariant adata);
 
         int row(){return _row;}
         int col(){return _col;}
