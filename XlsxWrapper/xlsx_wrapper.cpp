@@ -54,10 +54,12 @@ XlsxWrapper::Cell* XlsxWrapper::Sheet::cell(int rowIndex, int colIndex)
 {
     Cell *c = nullptr;
 
+    // Вариант 1
+
     for ( int index = 0; index < _cellList.size(); ++index ) {
         QXlsx::CellLocation location = _cellList.at(index); // cell location
         if ((location.row == rowIndex) && (location.col == colIndex)){
-            // Вернём найденную ячеку
+            // Вернём найденную ячейку
             с = new Cell();
             c->_row = location.row;
             c->_col = location.col;
@@ -66,6 +68,15 @@ XlsxWrapper::Cell* XlsxWrapper::Sheet::cell(int rowIndex, int colIndex)
             return c;
         }
     }
+    return c;
+
+    // Вариант 2
+    QXlsx::Cell *outCell = _xlsxSheet->cellAt(rowIndex, colIndex);
+    с = new Cell();
+    c->_row = rowIndex;
+    c->_col = colIndex;
+    c->_sheet = this;
+    c->_data = outCell->value();
 
     return c;
 }
