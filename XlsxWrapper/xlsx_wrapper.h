@@ -44,6 +44,7 @@ public:
         QVector<QXlsx::CellLocation> _cellList;
         int _maxRow;
         int _maxCol;
+        QHash<int, QHash<int, Cell*> > _cells; // <строка, <столбец, Ячейка> >
 
         Sheet(QString aname, Book abook);
        ~Sheet(); // TODO: сделать удаление ячеек

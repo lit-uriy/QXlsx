@@ -54,29 +54,27 @@ XlsxWrapper::Cell* XlsxWrapper::Sheet::cell(int rowIndex, int colIndex)
 {
     Cell *c = nullptr;
 
-    // Вариант 1
-
-    for ( int index = 0; index < _cellList.size(); ++index ) {
-        QXlsx::CellLocation location = _cellList.at(index); // cell location
-        if ((location.row == rowIndex) && (location.col == colIndex)){
-            // Вернём найденную ячейку
-            с = new Cell();
-            c->_row = location.row;
-            c->_col = location.col;
-            c->_sheet = this;
-            c->_data = location.cell->value();
+    // Сначала поищем во внутренней таблице
+    if (_cells.contains(rowIndex)){
+        QHash<int, Cell*> row = _cells.value(rowIndex);
+        if (row.contains(colIndex)){
+            c = row.value(colIndex);
             return c;
         }
     }
-    return c;
 
-    // Вариант 2
+    // Если, не нашли, то ищем в XLSX-е
     QXlsx::Cell *outCell = _xlsxSheet->cellAt(rowIndex, colIndex);
-    с = new Cell();
-    c->_row = rowIndex;
-    c->_col = colIndex;
-    c->_sheet = this;
-    c->_data = outCell->value();
+    if (outCell){
+        // Создадим свою ячеку
+        с = new Cell();
+        c->_row = rowIndex;
+        c->_col = colIndex;
+        c->_sheet = this;
+        c->_data = outCell->value();
+        // и поместим её во внутренюю таблицу
+        _cells[rowIndex].insert(colIndex, c);
+    }
 
     return c;
 }
