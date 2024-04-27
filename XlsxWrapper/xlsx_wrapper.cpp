@@ -1,5 +1,7 @@
 #include "xlsx_wrapper.h"
 
+#include <QDebug>
+
 //==================================================================================================
 //                            Book
 //==================================================================================================
@@ -43,8 +45,8 @@ XlsxWrapper::Sheet* XlsxWrapper::Book::sheet(QString asheetName)
 //                            Sheet
 //==================================================================================================
 
-XlsxWrapper::Sheet::Sheet(QString aname, Book abook)
-    :_name(anme)
+XlsxWrapper::Sheet::Sheet(QString aname, Book *abook)
+    :_name(aname)
     ,_book(abook)
 {
     _cellList = _xlsxSheet->getFullCells( &_maxRow, &_maxCol );
@@ -67,7 +69,7 @@ XlsxWrapper::Cell* XlsxWrapper::Sheet::cell(int rowIndex, int colIndex)
     QXlsx::Cell *outCell = _xlsxSheet->cellAt(rowIndex, colIndex);
     if (outCell){
         // Создадим свою ячеку
-        с = new Cell();
+        c = new Cell();
         c->_row = rowIndex;
         c->_col = colIndex;
         c->_sheet = this;
@@ -79,37 +81,37 @@ XlsxWrapper::Cell* XlsxWrapper::Sheet::cell(int rowIndex, int colIndex)
     return c;
 }
 
-XlsxWrapper::Cell* XlsxWrapper::Sheet::findCell(QString text, FindRules fr = Contains, Qt::CaseSensitivity cs = Qt::CaseSensitive)
+XlsxWrapper::Cell* XlsxWrapper::Sheet::findCell(QString text, FindRules fr, Qt::CaseSensitivity cs)
 {
-    QXlsx::Cell *outCell = nullptr;
 
-    for ( int index = 0; index < _cellList.size(); ++index ) {
-        QXlsx::CellLocation location = _cellList.at(index); // cell location
+    Cell *outCell = nullptr;
 
-        // value of cell
-        QVariant var = location.cell->value();
-        QString str = var.toString();
-        auto ptr = location.cell;
+    for (int row = 0; row < _maxRow; ++row) {
+        QHash<int, Cell*> r = _cells.value(row);
 
-        switch (fr) {
-        case StartsWith:
-            if (str.startsWith(text, cs)){
-                outCell = ptr.get();
-                return outCell;
+        for (int col = 0; col < _maxCol; ++col) {
+            Cell *c = r.value(col);
+
+            // value of cell
+            QString str = c->data().toString();
+
+            switch (fr) {
+            case StartsWith:
+                if (str.startsWith(text, cs)){
+                    return outCell = c;
+                }
+                break;
+            case Contains:
+                if (str.contains(text, cs)){
+                    return outCell = c;
+                }
+                break;
+            default: // EndsWith
+                if (str.endsWith(text, cs)){
+                    return outCell = c;
+                }
+                break;
             }
-            break;
-        case Contains:
-            if (str.contains(text, cs)){
-                outCell = ptr.get();
-                return outCell;
-            }
-            break;
-        default: // EndsWith
-            if (str.endsWith(text, cs)){
-                outCell = ptr.get();
-                return outCell;
-            }
-            break;
         }
     }
 
