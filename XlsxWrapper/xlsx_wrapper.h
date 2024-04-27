@@ -53,6 +53,10 @@ namespace XlsxWrapper {
 
     public:
         Book* book(){return _book;}
+
+        int maximumRow() {return _maxRow;}
+        int maximumCol() {return _maxCol;}
+
         Cell* cell(int rowIndex, int colIndex);
 //        Cell* cell(QString coordinat); // буквенно цифровые координаты, например: B7, столбец "B", строка 7
 
