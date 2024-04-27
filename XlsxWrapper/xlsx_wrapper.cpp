@@ -18,8 +18,8 @@ Book::Book(QString fileName)
     }
     _valid = true;
 
-    QList<QString> sheetNames();
-    foreach (QString name, sheetNames()) {
+    QList<QString> names = _bookFile->sheetNames();
+    foreach (QString name, names) {
         Sheet *s = new Sheet(name, this);
         s->_xlsxSheet = dynamic_cast<QXlsx::Worksheet *>(_bookFile->sheet(name));
         _sheets.insert(name, s);
