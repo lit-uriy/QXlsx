@@ -74,7 +74,7 @@ public:
 
     public:
 
-        QVariant data();
+        QVariant data(){return _data;}
 //        void setData(QVariant adata);
 
         int row(){return _row;}
