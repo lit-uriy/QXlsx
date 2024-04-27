@@ -77,7 +77,7 @@ namespace XlsxWrapper {
 //        void setData(QVariant adata);
 
         int row(){return _row;}
-        int col(){return _col;}
+        int column(){return _col;}
 
         Sheet* sheet();
     };
