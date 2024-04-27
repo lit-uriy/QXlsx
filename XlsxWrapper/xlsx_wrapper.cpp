@@ -25,6 +25,15 @@ Book::Book(QString fileName)
         _sheets.insert(name, s);
     }
 }
+
+Book::~Book()
+{
+    foreach (Sheet *sh, _sheets) {
+        delete sh;
+    }
+    _sheets.clear();
+}
+
 QList<Sheet*> Book::sheets()
 {
     return _sheets.values();
@@ -52,6 +61,20 @@ Sheet::Sheet(QString aname, Book *abook)
     ,_book(abook)
 {
     _cellList = _xlsxSheet->getFullCells( &_maxRow, &_maxCol );
+}
+
+Sheet::~Sheet()
+{
+    for (int row = 0; row < _maxRow; ++row) {
+        QHash<int, Cell*> r = _cells.value(row);
+
+        for (int col = 0; col < _maxCol; ++col) {
+            Cell *c = r.value(col);
+            delete c;
+        }
+    }
+
+    _cells.clear();
 }
 
 Cell* Sheet::cell(int rowIndex, int colIndex)
