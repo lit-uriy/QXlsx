@@ -4,9 +4,8 @@
 
 #include "xlsxdocument.h"
 
-class XlsxWrapper
-{
-public:
+namespace XlsxWrapper {
+
 
     enum FindRules{
         StartsWith = 0,
@@ -82,6 +81,8 @@ public:
 
         Sheet* sheet();
     };
-};
+
+
+} // namespace XlsxWrapper
 
 #endif // XLSX_WRAPPER_H

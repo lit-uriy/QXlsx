@@ -2,16 +2,18 @@
 
 #include <QDebug>
 
+namespace XlsxWrapper {
+
 //==================================================================================================
 //                            Book
 //==================================================================================================
 
-XlsxWrapper::Book::Book(QString fileName)
+Book::Book(QString fileName)
     :_valid(false)
 {
     _bookFile = new QXlsx::Document(fileName);
     if (!_bookFile->isLoadPackage()) {
-        qDebug() << "XlsxWrapper::Book::Book() ERROR on open XLSX-file (" << fileName << ")";
+        qDebug() << "Book::Book() ERROR on open XLSX-file (" << fileName << ")";
         return;
     }
     _valid = true;
@@ -23,18 +25,18 @@ XlsxWrapper::Book::Book(QString fileName)
         _sheets.insert(name, s);
     }
 }
-QList<XlsxWrapper::Sheet*> XlsxWrapper::Book::sheets()
+QList<Sheet*> Book::sheets()
 {
     return _sheets.values();
 }
 
-QList<QString> XlsxWrapper::Book::sheetNames()
+QList<QString> Book::sheetNames()
 {
     return _sheets.keys();
 }
 
 
-XlsxWrapper::Sheet* XlsxWrapper::Book::sheet(QString asheetName)
+Sheet* Book::sheet(QString asheetName)
 {
     return _sheets.value(asheetName);
 }
@@ -45,14 +47,14 @@ XlsxWrapper::Sheet* XlsxWrapper::Book::sheet(QString asheetName)
 //                            Sheet
 //==================================================================================================
 
-XlsxWrapper::Sheet::Sheet(QString aname, Book *abook)
+Sheet::Sheet(QString aname, Book *abook)
     :_name(aname)
     ,_book(abook)
 {
     _cellList = _xlsxSheet->getFullCells( &_maxRow, &_maxCol );
 }
 
-XlsxWrapper::Cell* XlsxWrapper::Sheet::cell(int rowIndex, int colIndex)
+Cell* Sheet::cell(int rowIndex, int colIndex)
 {
     Cell *c = nullptr;
 
@@ -81,7 +83,7 @@ XlsxWrapper::Cell* XlsxWrapper::Sheet::cell(int rowIndex, int colIndex)
     return c;
 }
 
-XlsxWrapper::Cell* XlsxWrapper::Sheet::findCell(QString text, FindRules fr, Qt::CaseSensitivity cs)
+Cell* Sheet::findCell(QString text, FindRules fr, Qt::CaseSensitivity cs)
 {
 
     Cell *outCell = nullptr;
@@ -117,3 +119,5 @@ XlsxWrapper::Cell* XlsxWrapper::Sheet::findCell(QString text, FindRules fr, Qt::
 
     return outCell;
 }
+
+} // namespace XlsxWrapper
