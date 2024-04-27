@@ -112,10 +112,12 @@ Cell* Sheet::findCell(QString text, FindRules fr, Qt::CaseSensitivity cs)
     Cell *outCell = nullptr;
 
     for (int row = 0; row < _maxRow; ++row) {
-        QHash<int, Cell*> r = _cells.value(row);
-
         for (int col = 0; col < _maxCol; ++col) {
-            Cell *c = r.value(col);
+            Cell *c = cell(row, col);
+            if (!c){
+//                qDebug() << "Cell(" << row << "," << col << ") is NULL";
+                continue;
+            }
 
             // value of cell
             QString str = c->data().toString();
