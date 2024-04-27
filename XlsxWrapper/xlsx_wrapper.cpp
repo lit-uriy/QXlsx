@@ -20,8 +20,7 @@ Book::Book(QString fileName)
 
     QList<QString> names = _bookFile->sheetNames();
     foreach (QString name, names) {
-        Sheet *s = new Sheet(name, this);
-        s->_xlsxSheet = dynamic_cast<QXlsx::Worksheet *>(_bookFile->sheet(name));
+        Sheet *s = new Sheet(name, this, dynamic_cast<QXlsx::Worksheet *>(_bookFile->sheet(name)));
         _sheets.insert(name, s);
     }
 }
@@ -56,9 +55,10 @@ Sheet* Book::sheet(QString asheetName)
 //                            Sheet
 //==================================================================================================
 
-Sheet::Sheet(QString aname, Book *abook)
+Sheet::Sheet(QString aname, Book *abook, QXlsx::Worksheet *axlsxSheet)
     :_name(aname)
     ,_book(abook)
+    ,_xlsxSheet(axlsxSheet)
 {
     _cellList = _xlsxSheet->getFullCells( &_maxRow, &_maxCol );
 }

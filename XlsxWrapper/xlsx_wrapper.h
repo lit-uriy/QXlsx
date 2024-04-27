@@ -48,7 +48,7 @@ namespace XlsxWrapper {
         int _maxCol;
         QHash<int, QHash<int, Cell*> > _cells; // <строка, <столбец, Ячейка> >
 
-        Sheet(QString aname, Book *abook);
+        Sheet(QString aname, Book *abook, QXlsx::Worksheet *axlsxSheet);
        ~Sheet(); // TODO: сделать удаление ячеек
 
     public:
