@@ -77,30 +77,30 @@ Sheet::~Sheet()
     _cells.clear();
 }
 
-Cell* Sheet::cell(int rowIndex, int colIndex)
+Cell* Sheet::cell(int rowNumber, int columnNumber)
 {
     Cell *c = nullptr;
 
     // Сначала поищем во внутренней таблице
-    if (_cells.contains(rowIndex)){
-        QHash<int, Cell*> row = _cells.value(rowIndex);
-        if (row.contains(colIndex)){
-            c = row.value(colIndex);
+    if (_cells.contains(rowNumber - 1)){
+        QHash<int, Cell*> row = _cells.value(rowNumber - 1);
+        if (row.contains(columnNumber - 1)){
+            c = row.value(columnNumber - 1);
             return c;
         }
     }
 
     // Если, не нашли, то ищем в XLSX-е
-    QXlsx::Cell *outCell = _xlsxSheet->cellAt(rowIndex, colIndex);
+    QXlsx::Cell *outCell = _xlsxSheet->cellAt(rowNumber, columnNumber);
     if (outCell){
         // Создадим свою ячеку
         c = new Cell();
-        c->_row = rowIndex;
-        c->_col = colIndex;
+        c->_rowNumber = rowNumber;
+        c->_columnNumber = columnNumber;
         c->_sheet = this;
         c->_data = outCell->value();
         // и поместим её во внутренюю таблицу
-        _cells[rowIndex].insert(colIndex, c);
+        _cells[rowNumber - 1].insert(columnNumber - 1, c);
     }
 
     return c;
@@ -111,8 +111,8 @@ Cell* Sheet::findCell(QString text, FindRules fr, Qt::CaseSensitivity cs)
 
     Cell *outCell = nullptr;
 
-    for (int row = 0; row < _maxRow; ++row) {
-        for (int col = 0; col < _maxCol; ++col) {
+    for (int row = 1; row <= _maxRow; ++row) {
+        for (int col = 1; col <= _maxCol; ++col) {
             Cell *c = cell(row, col);
             if (!c){
 //                qDebug() << "Cell(" << row << "," << col << ") is NULL";

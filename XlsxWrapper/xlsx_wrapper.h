@@ -57,7 +57,7 @@ namespace XlsxWrapper {
         int maximumRow() {return _maxRow;}
         int maximumCol() {return _maxCol;}
 
-        Cell* cell(int rowIndex, int colIndex);
+        Cell* cell(int rowNumber, int columnNumber);
 //        Cell* cell(QString coordinat); // буквенно цифровые координаты, например: B7, столбец "B", строка 7
 
         Cell* findCell(QString text, FindRules fr = Contains, Qt::CaseSensitivity cs = Qt::CaseSensitive);
@@ -70,7 +70,7 @@ namespace XlsxWrapper {
     {
         friend class Sheet;
 
-        int _row, _col;
+        int _rowNumber, _columnNumber;
         Sheet *_sheet;
         QVariant _data;
         Cell(){}
@@ -80,8 +80,8 @@ namespace XlsxWrapper {
         QVariant data(){return _data;}
 //        void setData(QVariant adata);
 
-        int row(){return _row;}
-        int column(){return _col;}
+        int rowNumber(){return _rowNumber;}
+        int columnNumber(){return _columnNumber;}
 
         Sheet* sheet();
     };
