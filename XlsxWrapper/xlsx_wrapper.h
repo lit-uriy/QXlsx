@@ -83,7 +83,7 @@ namespace XlsxWrapper {
         int rowNumber(){return _rowNumber;}
         int columnNumber(){return _columnNumber;}
 
-        Sheet* sheet();
+        Sheet* sheet() {return _sheet;}
     };
 
 
