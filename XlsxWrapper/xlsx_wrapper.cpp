@@ -145,4 +145,18 @@ Cell* Sheet::findCell(QString text, FindRules fr, Qt::CaseSensitivity cs)
     return outCell;
 }
 
+bool Cell::isSpaned()
+{
+    QList<QXlsx::CellRange> ranges = _sheet->toXlsx()->mergedCells();
+    foreach (QXlsx::CellRange range, ranges) {
+        QXlsx::CellReference tl = range.topLeft();
+        QXlsx::CellReference br = range.bottomRight();
+        bool inBetweenColumn = (tl.column() <= _columnNumber) && (br.column() >= _columnNumber);
+        bool inBetweenRow = (tl.row() <= _rowNumber) && (br.row() >= _rowNumber);
+        if (inBetweenColumn && inBetweenRow)
+            return true;
+    }
+    return false;
+}
+
 } // namespace XlsxWrapper

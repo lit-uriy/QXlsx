@@ -83,6 +83,8 @@ namespace XlsxWrapper {
         int rowNumber(){return _rowNumber;}
         int columnNumber(){return _columnNumber;}
 
+        bool isSpaned();
+
         Sheet* sheet() {return _sheet;}
     };
 
