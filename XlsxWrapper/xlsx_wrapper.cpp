@@ -31,6 +31,8 @@ Book::~Book()
         delete sh;
     }
     _sheets.clear();
+
+    delete _bookFile;
 }
 
 QList<Sheet*> Book::sheets()
