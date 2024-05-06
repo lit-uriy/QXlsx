@@ -25,7 +25,7 @@ namespace XlsxWrapper {
 
     public:
         Book(QString fileName);
-       ~Book(); // TODO: сделать удаление книг
+       ~Book();
 
         bool isValid() {return _valid;}
 
@@ -49,7 +49,7 @@ namespace XlsxWrapper {
         QHash<int, QHash<int, Cell*> > _cells; // <строка, <столбец, Ячейка> >
 
         Sheet(QString aname, Book *abook, QXlsx::Worksheet *axlsxSheet);
-       ~Sheet(); // TODO: сделать удаление ячеек
+       ~Sheet();
 
     public:
         Book* book(){return _book;}
