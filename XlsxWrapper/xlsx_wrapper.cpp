@@ -2,6 +2,12 @@
 
 #include <QDebug>
 
+#if 0
+    #define DEBUG qDebug()
+#else
+    #define DEBUG  QMessageLogger(0, 0, 0).noDebug()
+#endif
+
 namespace XlsxWrapper {
 
 //==================================================================================================
@@ -13,7 +19,7 @@ Book::Book(QString fileName)
 {
     _bookFile = new QXlsx::Document(fileName);
     if (!_bookFile->isLoadPackage()) {
-        qDebug() << "Book::Book() ERROR on open XLSX-file (" << fileName << ")";
+        DEBUG << "Book::Book() ERROR on open XLSX-file (" << fileName << ")";
         return;
     }
     _valid = true;
@@ -117,7 +123,7 @@ Cell* Sheet::findCell(QString text, FindRules fr, Qt::CaseSensitivity cs)
         for (int col = 1; col <= _maxCol; ++col) {
             Cell *c = cell(row, col);
             if (!c){
-//                qDebug() << "Cell(" << row << "," << col << ") is NULL";
+//                DEBUG << "Cell(" << row << "," << col << ") is NULL";
                 continue;
             }
 
