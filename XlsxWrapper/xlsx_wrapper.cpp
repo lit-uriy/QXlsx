@@ -19,7 +19,8 @@ Book::Book(QString fileName)
 {
     _bookFile = new QXlsx::Document(fileName);
     if (!_bookFile->isLoadPackage()) {
-        DEBUG << "Book::Book() ERROR on open XLSX-file (" << fileName << ")";
+        _errorText = QString("Book::Book() ERROR on open XLSX-file (%1)").arg(fileName);
+        DEBUG << _errorText;
         return;
     }
     _valid = true;

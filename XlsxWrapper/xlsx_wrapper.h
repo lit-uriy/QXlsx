@@ -21,6 +21,7 @@ namespace XlsxWrapper {
         QXlsx::Workbook *_xlsxBook;
         QXlsx::Document *_bookFile;
         bool _valid;
+        QString _errorText;
         QMap<QString, Sheet*> _sheets; // <name, sheet pointer>
 
     public:
@@ -28,6 +29,7 @@ namespace XlsxWrapper {
        ~Book();
 
         bool isValid() {return _valid;}
+        QString errorText() {return _errorText;}
 
         Sheet* sheet(QString asheetName);
         QList<Sheet*> sheets();
