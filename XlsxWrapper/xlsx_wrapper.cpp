@@ -27,7 +27,11 @@ Book::Book(QString fileName)
 
     QList<QString> names = _bookFile->sheetNames();
     foreach (QString name, names) {
-        Sheet *s = new Sheet(name, this, dynamic_cast<QXlsx::Worksheet *>(_bookFile->sheet(name)));
+        QXlsx::Worksheet *ss = dynamic_cast<QXlsx::Worksheet *>(_bookFile->sheet(name));
+        if (!ss){
+            continue; // QXlsx::Worksheet может не быть, эсли это лист-диаграмма и т.п.
+        }
+        Sheet *s = new Sheet(name, this, ss);
         _sheets.insert(name, s);
     }
 }
