@@ -59,7 +59,10 @@ QList<QString> Book::sheetNames()
 
 Sheet* Book::sheet(QString asheetName)
 {
-    return _sheets.value(asheetName);
+    if (_sheets.contains(asheetName))
+        return _sheets.value(asheetName);
+    else
+        return nullptr;
 }
 
 
